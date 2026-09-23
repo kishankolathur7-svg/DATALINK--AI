@@ -1,4 +1,9 @@
 // ==================================================
+// DATALINK AI - AUTHENTICATION
+// ==================================================
+
+
+// ==================================================
 // REGISTER
 // ==================================================
 
@@ -26,7 +31,8 @@ if (registerForm) {
                 document
                     .getElementById("email")
                     .value
-                    .trim();
+                    .trim()
+                    .toLowerCase();
 
 
             const password =
@@ -58,6 +64,9 @@ if (registerForm) {
                                     "application/json"
                             },
 
+                            credentials:
+                                "same-origin",
+
                             body: JSON.stringify({
                                 name,
                                 email,
@@ -84,21 +93,25 @@ if (registerForm) {
                                 "/login.html";
 
                         },
-                        1000
+                        800
                     );
 
 
                 } else {
 
                     message.textContent =
-                        data.message;
+                        data.message ||
+                        "Registration failed.";
 
                 }
 
 
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "Registration error:",
+                    error
+                );
 
 
                 message.textContent =
@@ -133,7 +146,8 @@ if (loginForm) {
                 document
                     .getElementById("loginEmail")
                     .value
-                    .trim();
+                    .trim()
+                    .toLowerCase();
 
 
             const password =
@@ -165,6 +179,9 @@ if (loginForm) {
                                     "application/json"
                             },
 
+                            credentials:
+                                "same-origin",
+
                             body: JSON.stringify({
                                 email,
                                 password
@@ -177,18 +194,32 @@ if (loginForm) {
                     await response.json();
 
 
-                if (data.success) {
+                console.log(
+                    "Login response:",
+                    data
+                );
 
+
+                if (response.ok && data.success) {
+
+                    // IMPORTANT:
+                    // dashboard.js expects this exact key.
                     localStorage.setItem(
-                        "user",
+                        "productmind_user",
                         JSON.stringify(
                             data.user
                         )
                     );
 
 
+                    // Remove the old incorrect key.
+                    localStorage.removeItem(
+                        "user"
+                    );
+
+
                     message.textContent =
-                        "Login successful!";
+                        "Login successful! Redirecting...";
 
 
                     setTimeout(
@@ -198,21 +229,25 @@ if (loginForm) {
                                 "/dashboard.html";
 
                         },
-                        500
+                        300
                     );
 
 
                 } else {
 
                     message.textContent =
-                        data.message;
+                        data.message ||
+                        "Invalid email or password.";
 
                 }
 
 
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "Login error:",
+                    error
+                );
 
 
                 message.textContent =
