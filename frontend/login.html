@@ -11,7 +11,7 @@
     >
 
     <title>
-        Login - Data Link AI
+        Login | Data Link AI
     </title>
 
     <link
@@ -21,52 +21,328 @@
 
 </head>
 
-<body>
 
-    <div class="auth-container">
-
-        <h1>Data Link AI</h1>
-
-        <h2>Login</h2>
+<body class="auth-page">
 
 
-        <form id="loginForm">
+    <div class="auth-background">
 
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Email"
-                required
-            >
+        <div class="auth-orb auth-orb-one"></div>
+        <div class="auth-orb auth-orb-two"></div>
+        <div class="auth-orb auth-orb-three"></div>
 
 
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Password"
-                required
-            >
+        <div class="auth-layout">
 
 
-            <button type="submit">
-                Login
-            </button>
+            <!-- ========================================= -->
+            <!-- BRAND PANEL                               -->
+            <!-- ========================================= -->
 
-        </form>
+            <section class="auth-brand-panel">
+
+                <div class="brand-content">
 
 
-        <p id="loginMessage"></p>
+                    <div class="brand-logo">
+
+                        <div class="brand-logo-icon">
+                            DL
+                        </div>
+
+                        <span>
+                            Data Link AI
+                        </span>
+
+                    </div>
 
 
-        <p>
+                    <div class="brand-main">
 
-            Don't have an account?
+                        <div class="eyebrow">
+                            INTELLIGENT DATA PLATFORM
+                        </div>
 
-            <a href="/register.html">
-                Create account
-            </a>
 
-        </p>
+                        <h1>
+                            Turn raw data into
+                            <span>
+                                structured intelligence.
+                            </span>
+                        </h1>
+
+
+                        <p>
+                            Upload, analyze, clean and understand
+                            your datasets with a single intelligent
+                            workflow.
+                        </p>
+
+
+                        <div class="feature-list">
+
+
+                            <div class="feature-item">
+
+                                <div class="feature-icon">
+                                    ✓
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Smart Data Analysis
+                                    </strong>
+
+                                    <span>
+                                        Understand your dataset instantly.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="feature-item">
+
+                                <div class="feature-icon">
+                                    ✓
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Data Quality Detection
+                                    </strong>
+
+                                    <span>
+                                        Detect missing and duplicate data.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="feature-item">
+
+                                <div class="feature-icon">
+                                    ✓
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Intelligent Cleaning
+                                    </strong>
+
+                                    <span>
+                                        Transform messy datasets into cleaner data.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="brand-footer">
+
+                        <span>
+                            DATA LINK AI
+                        </span>
+
+                        <span>
+                            •
+                        </span>
+
+                        <span>
+                            Intelligent Data Processing
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================================= -->
+            <!-- LOGIN PANEL                               -->
+            <!-- ========================================= -->
+
+            <section class="auth-form-panel">
+
+
+                <div class="auth-card">
+
+
+                    <div class="mobile-brand">
+
+                        <div class="brand-logo-icon">
+                            DL
+                        </div>
+
+                        <span>
+                            Data Link AI
+                        </span>
+
+                    </div>
+
+
+                    <div class="auth-heading">
+
+                        <span class="auth-small-label">
+                            WELCOME BACK
+                        </span>
+
+                        <h2>
+                            Sign in to your workspace
+                        </h2>
+
+                        <p>
+                            Continue managing and analyzing your data.
+                        </p>
+
+                    </div>
+
+
+
+                    <form
+                        id="loginForm"
+                        class="modern-auth-form"
+                    >
+
+
+                        <div class="form-group">
+
+                            <label for="loginEmail">
+                                Email address
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    @
+                                </span>
+
+                                <input
+                                    type="email"
+                                    id="loginEmail"
+                                    placeholder="you@example.com"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    •
+                                </span>
+
+                                <input
+                                    type="password"
+                                    id="loginPassword"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <button
+                            type="submit"
+                            class="primary-auth-button"
+                        >
+
+                            <span>
+                                Sign In
+                            </span>
+
+                            <span class="button-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                    </form>
+
+
+
+                    <div
+                        id="loginMessage"
+                        class="auth-message"
+                    >
+                    </div>
+
+
+
+                    <div class="auth-divider">
+
+                        <span>
+                            SECURE WORKSPACE
+                        </span>
+
+                    </div>
+
+
+
+                    <p class="register-prompt">
+
+                        Don't have an account?
+
+                        <a href="/register.html">
+                            Create an account
+                        </a>
+
+                    </p>
+
+
+                    <div class="security-note">
+
+                        <span>
+                            🔒
+                        </span>
+
+                        <span>
+                            Your account and data are protected.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
 
     </div>
 

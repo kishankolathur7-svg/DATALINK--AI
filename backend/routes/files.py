@@ -1298,3 +1298,225 @@ def clean_empty_columns_route(
             "message": "Could not clean empty columns",
             "error": str(error)
         }), 500
+
+    
+# ============================================================
+# AI-POWERED DATASET ANALYSIS
+# Add this code at the bottom of backend/routes/files.py
+# ============================================================
+
+@files_bp.route(
+    "/<int:file_id>/ai-analysis",
+    methods=["GET"]
+)
+def ai_analyze_file(file_id):
+
+    user_id = get_user_id()
+
+    if user_id is None:
+        return jsonify({
+            "success": False,
+            "message": "Valid user ID is required"
+        }), 400
+
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    if not api_key:
+        return jsonify({
+            "success": False,
+            "message": "OPENAI_API_KEY is not configured"
+        }), 500
+
+    try:
+        # Import here so other existing routes can still load
+        # if the OpenAI package has not yet been installed.
+        from openai import OpenAI
+
+        # Verify that this file belongs to the requested user.
+        file, file_path = get_file_path(
+            file_id,
+            user_id
+        )
+
+        if file is None:
+            return jsonify({
+                "success": False,
+                "message": "File not found"
+            }), 404
+
+        if not os.path.isfile(file_path):
+            return jsonify({
+                "success": False,
+                "message": "Uploaded dataset no longer exists"
+            }), 404
+
+        # Load the dataset using the existing project helper.
+        dataframe = read_dataset(
+            file_path,
+            file["file_type"]
+        )
+
+        if dataframe.empty or len(dataframe.columns) == 0:
+            return jsonify({
+                "success": False,
+                "message": "The dataset is empty"
+            }), 400
+
+        # Calculate statistics locally. Do not send raw rows.
+        row_count = len(dataframe)
+        column_count = len(dataframe.columns)
+
+        missing_values = {
+            str(column): int(
+                dataframe[column].isna().sum()
+            )
+            for column in dataframe.columns
+        }
+
+        missing_percentages = {
+            str(column): round(
+                float(
+                    dataframe[column].isna().mean()
+                    * 100
+                ),
+                2
+            )
+            for column in dataframe.columns
+        }
+
+        data_types = {
+            str(column): str(dataframe[column].dtype)
+            for column in dataframe.columns
+        }
+
+        numeric_summary = {}
+
+        numeric_columns = dataframe.select_dtypes(
+            include="number"
+        ).columns
+
+        for column in numeric_columns:
+            numeric_summary[str(column)] = (
+                dataframe[column]
+                .describe()
+                .to_dict()
+            )
+
+        categorical_summary = {}
+
+        categorical_columns = dataframe.select_dtypes(
+            include=["object", "category", "bool"]
+        ).columns
+
+        for column in categorical_columns:
+            categorical_summary[str(column)] = {
+                "unique_values": int(
+                    dataframe[column].nunique(
+                        dropna=True
+                    )
+                ),
+                "most_common_values": {
+                    str(key): int(value)
+                    for key, value in
+                    dataframe[column]
+                    .value_counts(dropna=True)
+                    .head(5)
+                    .items()
+                }
+            }
+
+        dataset_summary = make_json_safe({
+            "filename": file["original_name"],
+            "rows": row_count,
+            "columns": column_count,
+            "column_names": [
+                str(column)
+                for column in dataframe.columns
+            ],
+            "data_types": data_types,
+            "missing_values": missing_values,
+            "missing_percentages": missing_percentages,
+            "duplicate_rows": int(
+                dataframe.duplicated().sum()
+            ),
+            "numeric_summary": numeric_summary,
+            "categorical_summary": categorical_summary
+        })
+
+        # Call the OpenAI API.
+        client = OpenAI(api_key=api_key)
+
+        response = client.responses.create(
+            model="gpt-4.1-mini",
+            instructions="""
+You are the AI data analyst inside Data Link AI.
+
+Analyze the supplied dataset metadata and aggregate statistics.
+
+Provide these sections:
+
+1. Dataset Overview
+2. Important Patterns and Trends
+3. Data Quality Issues
+4. Missing Values and Duplicate Rows
+5. Potential Outliers or Anomalies
+6. Recommended Data Cleaning Steps
+7. Suggested Visualizations
+8. Recommended Next Steps
+
+Rules:
+- Use only evidence supported by the supplied statistics.
+- Do not claim correlation or causation without sufficient evidence.
+- Do not invent columns, values, or findings.
+- Explain limitations when aggregate statistics are insufficient.
+- Give practical, clear recommendations.
+- Do not execute cleaning operations or modify the uploaded file.
+""",
+            input=json.dumps(
+                dataset_summary,
+                ensure_ascii=False,
+                allow_nan=False
+            )
+        )
+
+        analysis_text = response.output_text
+
+        if not analysis_text:
+            return jsonify({
+                "success": False,
+                "message": "The AI returned an empty analysis"
+            }), 502
+
+        return jsonify(
+            make_json_safe({
+                "success": True,
+                "message": "AI analysis completed successfully",
+                "file": {
+                    "id": file["id"],
+                    "name": file["original_name"]
+                },
+                "dataset_summary": {
+                    "rows": row_count,
+                    "columns": column_count,
+                    "duplicate_rows": int(
+                        dataframe.duplicated().sum()
+                    ),
+                    "missing_values": missing_values,
+                    "missing_percentages": missing_percentages
+                },
+                "ai_analysis": analysis_text
+            })
+        ), 200
+
+    except Exception:
+        # Keep API keys and internal error details out of responses.
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "message": (
+                "AI analysis failed. Check the backend "
+                "terminal for the error details."
+            )
+        }), 500

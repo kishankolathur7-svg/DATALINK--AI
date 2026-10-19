@@ -1,226 +1,146 @@
-// ==================================================
-// REGISTER
-// ==================================================
 
-const registerForm =
-    document.getElementById("registerForm");
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const messageElement = document.getElementById("loginMessage");
+    const submitButton = document.getElementById("loginButton");
+    const togglePasswordButton = document.getElementById("togglePassword");
 
+    if (!form || !emailInput || !passwordInput || !messageElement || !submitButton) {
+        console.error("Data Link AI: Login form elements are missing.");
+        return;
+    }
 
-if (registerForm) {
+    function showMessage(message, type = "error") {
+        messageElement.textContent = message;
+        messageElement.style.display = "block";
 
-    registerForm.addEventListener(
-        "submit",
-        async function (event) {
+        if (type === "success") {
+            messageElement.style.color = "#75e6b0";
+            messageElement.style.borderColor = "rgba(117, 230, 176, 0.25)";
+            messageElement.style.background = "rgba(117, 230, 176, 0.06)";
+        } else {
+            messageElement.style.color = "#ff7f91";
+            messageElement.style.borderColor = "rgba(255, 127, 145, 0.2)";
+            messageElement.style.background = "rgba(255, 127, 145, 0.06)";
+        }
+    }
 
-            event.preventDefault();
+    function clearMessage() {
+        messageElement.textContent = "";
+        messageElement.style.display = "none";
+    }
 
+    function setLoading(loading) {
+        submitButton.disabled = loading;
+        submitButton.setAttribute("aria-busy", String(loading));
 
-            const name =
-                document
-                    .getElementById("name")
-                    .value
-                    .trim();
+        const label = submitButton.querySelector("span:first-child");
 
+        if (label) {
+            label.textContent = loading ? "Signing in..." : "Sign in";
+        }
+    }
 
-            const email =
-                document
-                    .getElementById("email")
-                    .value
-                    .trim();
+    if (togglePasswordButton) {
+        togglePasswordButton.addEventListener("click", () => {
+            const showPassword = passwordInput.type === "password";
 
+            passwordInput.type = showPassword ? "text" : "password";
+            togglePasswordButton.textContent = showPassword ? "Hide" : "Show";
+            togglePasswordButton.setAttribute(
+                "aria-label",
+                showPassword ? "Hide password" : "Show password"
+            );
+            togglePasswordButton.setAttribute(
+                "aria-pressed",
+                String(showPassword)
+            );
+        });
+    }
 
-            const password =
-                document
-                    .getElementById("password")
-                    .value;
+    form.addEventListener("input", clearMessage);
 
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clearMessage();
 
-            const message =
-                document.getElementById(
-                    "registerMessage"
+        const email = emailInput.value.trim().toLowerCase();
+        const password = passwordInput.value;
+
+        if (!email || !emailInput.validity.valid) {
+            showMessage("Please enter a valid email address.");
+            emailInput.focus();
+            return;
+        }
+
+        if (!password) {
+            showMessage("Please enter your password.");
+            passwordInput.focus();
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || result.success !== true) {
+                showMessage(
+                    result.message ||
+                    result.error ||
+                    "Login failed. Check your email and password."
                 );
-
-
-            message.textContent =
-                "Creating account...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        "/api/auth/register",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body: JSON.stringify({
-                                name,
-                                email,
-                                password
-                            })
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (data.success) {
-
-                    message.textContent =
-                        "Registration successful! Redirecting...";
-
-
-                    setTimeout(
-                        function () {
-
-                            window.location.href =
-                                "/login.html";
-
-                        },
-                        1000
-                    );
-
-
-                } else {
-
-                    message.textContent =
-                        data.message;
-
-                }
-
-
-            } catch (error) {
-
-                console.error(error);
-
-
-                message.textContent =
-                    "Unable to connect to backend.";
-
+                return;
             }
 
-        }
-    );
+            // Retain user information if the backend returns it.
+            // The backend remains responsible for authentication.
+            if (result.user) {
+                try {
+                    localStorage.setItem("user", JSON.stringify(result.user));
 
-}
+                    if (result.user.id !== undefined) {
+                        localStorage.setItem("user_id", String(result.user.id));
+                    }
 
+                    if (result.user.name) {
+                        localStorage.setItem("user_name", result.user.name);
+                    }
 
-// ==================================================
-// LOGIN
-// ==================================================
-
-const loginForm =
-    document.getElementById("loginForm");
-
-
-if (loginForm) {
-
-    loginForm.addEventListener(
-        "submit",
-        async function (event) {
-
-            event.preventDefault();
-
-
-            const email =
-                document
-                    .getElementById("loginEmail")
-                    .value
-                    .trim();
-
-
-            const password =
-                document
-                    .getElementById("loginPassword")
-                    .value;
-
-
-            const message =
-                document.getElementById(
-                    "loginMessage"
-                );
-
-
-            message.textContent =
-                "Logging in...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        "/api/auth/login",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body: JSON.stringify({
-                                email,
-                                password
-                            })
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (data.success) {
-
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(
-                            data.user
-                        )
-                    );
-
-
-                    message.textContent =
-                        "Login successful!";
-
-
-                    setTimeout(
-                        function () {
-
-                            window.location.href =
-                                "/dashboard.html";
-
-                        },
-                        500
-                    );
-
-
-                } else {
-
-                    message.textContent =
-                        data.message;
-
+                    if (result.user.email) {
+                        localStorage.setItem("user_email", result.user.email);
+                    }
+                } catch (storageError) {
+                    console.warn("Could not save optional user details.", storageError);
                 }
-
-
-            } catch (error) {
-
-                console.error(error);
-
-
-                message.textContent =
-                    "Unable to connect to backend.";
-
             }
 
-        }
-    );
+            showMessage("Login successful. Opening your workspace...", "success");
 
-}
+            window.setTimeout(() => {
+                window.location.href = "/dashboard.html";
+            }, 500);
+
+        } catch (error) {
+            console.error("Login request failed:", error);
+
+            showMessage(
+                "Cannot connect to Data Link AI. Make sure the Flask server is running."
+            );
+        } finally {
+            setLoading(false);
+        }
+    });
+});

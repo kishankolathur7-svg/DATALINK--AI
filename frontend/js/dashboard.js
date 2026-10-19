@@ -849,7 +849,7 @@ async function loadQualityReport(
 
 
 // ============================================================
-// DISPLAY QUALITY REPORT
+// DISPLAY QUALITY REPORT — FIXED
 // ============================================================
 
 function displayQualityReport(
@@ -865,7 +865,7 @@ function displayQualityReport(
         return;
     }
 
-    if (!quality) {
+    if (!quality || typeof quality !== "object") {
 
         container.innerHTML =
             "<p>No quality report available.</p>";
@@ -873,36 +873,58 @@ function displayQualityReport(
         return;
     }
 
+    // Aggregate statistics are stored in quality.summary.
+    const summary =
+        quality.summary &&
+        typeof quality.summary === "object"
+            ? quality.summary
+            : {};
+
     const score =
         quality.quality_score ??
         quality.score ??
         "N/A";
 
+    // quality.missing_values is a per-column object.
+    // The total missing count is stored in summary.missing_values.
     const totalMissing =
+        summary.missing_values ??
         quality.total_missing ??
-        quality.missing_values ??
-        0;
+        (
+            typeof quality.missing_values === "number"
+                ? quality.missing_values
+                : 0
+        );
 
     const duplicateRows =
+        summary.duplicate_rows ??
         quality.duplicate_rows ??
         0;
 
     const emptyColumns =
-        quality.empty_columns ??
-        0;
+        summary.empty_columns ??
+        (
+            Array.isArray(
+                quality.empty_column_names
+            )
+                ? quality.empty_column_names.length
+                : (
+                    typeof quality.empty_columns === "number"
+                        ? quality.empty_columns
+                        : 0
+                )
+        );
+
+    const recommendations =
+        Array.isArray(
+            quality.recommendations
+        )
+            ? quality.recommendations
+            : [];
 
     let recommendationsHtml = "";
 
-    const recommendations =
-        quality.recommendations ||
-        [];
-
-    if (
-        Array.isArray(
-            recommendations
-        ) &&
-        recommendations.length > 0
-    ) {
+    if (recommendations.length > 0) {
 
         recommendationsHtml = `
             <div class="quality-recommendations">
@@ -912,23 +934,72 @@ function displayQualityReport(
                 </h4>
 
                 <ul>
+                    ${recommendations.map(
+                        function (recommendation) {
+
+                            let message = "";
+
+                            if (
+                                typeof recommendation === "string"
+                            ) {
+
+                                message =
+                                    recommendation;
+
+                            } else if (
+                                recommendation &&
+                                typeof recommendation === "object"
+                            ) {
+
+                                message =
+                                    recommendation.message ||
+                                    recommendation.description ||
+                                    recommendation.type ||
+                                    "Review this data-quality issue.";
+
+                                if (
+                                    recommendation.count !== undefined &&
+                                    recommendation.count !== null
+                                ) {
+
+                                    message +=
+                                        " (Count: " +
+                                        recommendation.count +
+                                        ")";
+                                }
+
+                            } else {
+
+                                message =
+                                    String(
+                                        recommendation ?? ""
+                                    );
+                            }
+
+                            return `
+                                <li>
+                                    ${escapeHtml(message)}
+                                </li>
+                            `;
+                        }
+                    ).join("")}
+                </ul>
+
+            </div>
         `;
 
-        recommendations.forEach(
-            function (recommendation) {
+    } else {
 
-                recommendationsHtml += `
-                    <li>
-                        ${escapeHtml(
-                            recommendation
-                        )}
-                    </li>
-                `;
-            }
-        );
+        recommendationsHtml = `
+            <div class="quality-recommendations">
 
-        recommendationsHtml += `
-                </ul>
+                <h4>
+                    Recommendations
+                </h4>
+
+                <p>
+                    No recommendations available.
+                </p>
 
             </div>
         `;
@@ -949,9 +1020,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${escapeHtml(
-                            String(score)
-                        )}
+                        ${escapeHtml(String(score))}${score !== "N/A" ? "%" : ""}
                     </span>
                 </div>
 
@@ -961,7 +1030,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${totalMissing}
+                        ${Number(totalMissing).toLocaleString()}
                     </span>
                 </div>
 
@@ -971,7 +1040,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${duplicateRows}
+                        ${Number(duplicateRows).toLocaleString()}
                     </span>
                 </div>
 
@@ -981,7 +1050,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${emptyColumns}
+                        ${Number(emptyColumns).toLocaleString()}
                     </span>
                 </div>
 
@@ -1051,10 +1120,6 @@ function createCleaningControls(
                 Data Cleaning
             </h3>
 
-            <!-- ========================================= -->
-            <!-- MISSING VALUES                            -->
-            <!-- ========================================= -->
-
             <div class="cleaning-tool">
 
                 <h4>
@@ -1119,11 +1184,6 @@ function createCleaningControls(
                 ></div>
 
             </div>
-
-
-            <!-- ========================================= -->
-            <!-- DUPLICATES                                -->
-            <!-- ========================================= -->
 
             <div class="cleaning-tool">
 
@@ -1516,8 +1576,6 @@ async function cleanDuplicateRows(
         }
     }
 }
-
-
 // ============================================================
 // EMPTY COLUMN DETECTION
 // ============================================================
@@ -2064,4 +2122,120 @@ function escapeHtml(
             /'/g,
             "&#039;"
         );
+}
+// ============================================================
+// AI-POWERED DATASET ANALYSIS
+// ============================================================
+
+async function generateAIAnalysis() {
+    const fileIdInput = document.getElementById("ai-file-id");
+    const status = document.getElementById("ai-analysis-status");
+    const result = document.getElementById("ai-analysis-result");
+    const button = document.getElementById("ai-analyze-button");
+
+    const fileId = Number(fileIdInput.value);
+
+    if (!Number.isInteger(fileId) || fileId <= 0) {
+        status.textContent = "Please enter a valid dataset ID.";
+        return;
+    }
+
+    if (typeof user === "undefined" || !user || !user.id) {
+        status.textContent = "Please log in before using AI analysis.";
+        return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Analyzing dataset with AI. Please wait...";
+    result.textContent = "";
+
+    try {
+        const url =
+            `/api/files/${fileId}/ai-analysis` +
+            `?user_id=${encodeURIComponent(user.id)}`;
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            },
+            credentials: "same-origin"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || `Request failed with status ${response.status}`
+            );
+        }
+
+        if (!data.ai_analysis) {
+            throw new Error("The AI response did not contain an analysis.");
+        }
+
+        result.textContent = data.ai_analysis;
+        status.textContent = "AI analysis completed successfully.";
+
+    } catch (error) {
+        console.error("AI analysis error:", error);
+
+        status.textContent =
+            error.message || "Unable to generate AI analysis.";
+
+    } finally {
+        button.disabled = false;
+    }
+}
+async function generateAIAnalysis() {
+    const fileInput = document.getElementById("ai-file-id");
+    const status = document.getElementById("ai-analysis-status");
+    const result = document.getElementById("ai-analysis-result");
+    const button = document.getElementById("ai-analyze-button");
+
+    const fileId = Number(fileInput.value);
+
+    if (!Number.isInteger(fileId) || fileId < 1) {
+        status.textContent = "Please enter a valid dataset ID.";
+        return;
+    }
+
+    if (!user || !user.id) {
+        status.textContent = "Please log in first.";
+        return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Generating AI insights...";
+    result.textContent = "";
+
+    try {
+        const response = await fetch(
+            `/api/files/${fileId}/ai-analysis?user_id=${encodeURIComponent(user.id)}`,
+            {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                credentials: "same-origin"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || `Request failed: ${response.status}`
+            );
+        }
+
+        result.textContent = data.ai_analysis || "No analysis was returned.";
+        status.textContent = "AI analysis completed successfully.";
+
+    } catch (error) {
+        console.error("AI analysis error:", error);
+        status.textContent = error.message || "AI analysis failed.";
+    } finally {
+        button.disabled = false;
+    }
 }

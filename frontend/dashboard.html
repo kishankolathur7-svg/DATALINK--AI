@@ -1,205 +1,422 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080d18">
+    <meta name="description" content="Data Link AI dashboard for dataset management, data analysis and AI insights.">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Dashboard | Data Link AI</title>
 
-    <title>Dashboard - Data Link AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 
 <body>
-
-    <div class="dashboard">
+    <div class="app-shell">
 
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="/dashboard.html" aria-label="Data Link AI dashboard">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M8 12.5L20 6L32 12.5V27.5L20 34L8 27.5V12.5Z"
+                              stroke="currentColor" stroke-width="2"/>
+                        <path d="M8.5 13L20 19.5L31.5 13M20 19.5V33"
+                              stroke="currentColor" stroke-width="2"/>
+                        <circle cx="20" cy="19.5" r="3" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="brand-copy">
+                    <strong>Data Link<span> AI</span></strong>
+                    <small>INTELLIGENCE PLATFORM</small>
+                </span>
+            </a>
 
-            <div class="logo">
-                Data Link AI
+            <div class="sidebar-workspace">
+                <span class="workspace-icon">D</span>
+                <span class="workspace-copy">
+                    <strong>My Workspace</strong>
+                    <small>Personal workspace</small>
+                </span>
+                <span class="workspace-chevron" aria-hidden="true">⌄</span>
             </div>
 
-            <nav>
+            <nav class="sidebar-nav" aria-label="Main navigation">
+                <p class="nav-heading">WORKSPACE</p>
 
-                <a href="/dashboard.html" class="active">
-                    Dashboard
+                <a class="nav-link active" href="#overview" data-section="overview">
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span>Overview</span>
                 </a>
 
-                <a href="#">
-                    Upload Data
+                <a class="nav-link" href="#upload" data-section="upload">
+                    <span class="nav-icon" aria-hidden="true">↑</span>
+                    <span>Upload data</span>
                 </a>
 
-                <a href="#">
-                    My Files
+                <a class="nav-link" href="#datasets" data-section="datasets">
+                    <span class="nav-icon" aria-hidden="true">▤</span>
+                    <span>My datasets</span>
+                    <span class="nav-count" id="sidebarDatasetCount">0</span>
                 </a>
 
-                <a href="#">
-                    Analysis
+                <p class="nav-heading">INTELLIGENCE</p>
+
+                <a class="nav-link" href="#analysis" data-section="analysis">
+                    <span class="nav-icon" aria-hidden="true">⌁</span>
+                    <span>Data analysis</span>
                 </a>
 
-                <a href="#">
-                    History
+                <a class="nav-link" href="#ai-insights" data-section="ai-insights">
+                    <span class="nav-icon" aria-hidden="true">✳</span>
+                    <span>AI insights</span>
+                    <span class="nav-new">AI</span>
                 </a>
 
+                <p class="nav-heading">ACTIVITY</p>
+
+                <a class="nav-link" href="#activity" data-section="activity">
+                    <span class="nav-icon" aria-hidden="true">◷</span>
+                    <span>Recent activity</span>
+                </a>
             </nav>
 
-            <button
-                id="logoutButton"
-                class="logout-button"
-            >
-                Logout
-            </button>
+            <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <span class="tip-icon" aria-hidden="true">✳</span>
+                    <strong>Data tip</strong>
+                    <p>Clean, consistent data helps produce more reliable insights.</p>
+                </div>
 
+                <div class="sidebar-user">
+                    <span class="user-avatar" id="userAvatar">U</span>
+                    <span class="user-details">
+                        <strong id="userName">User</strong>
+                        <small>Workspace member</small>
+                    </span>
+                    <button class="icon-button logout-icon"
+                            id="logoutBtn"
+                            type="button"
+                            title="Log out"
+                            aria-label="Log out">⇥</button>
+                </div>
+            </div>
         </aside>
 
-        <main class="dashboard-main">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-            <header class="dashboard-header">
+        <!-- Main area -->
+        <main class="main-content">
 
-                <div>
-                    <h1>Dashboard</h1>
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="icon-button mobile-menu-button"
+                            id="mobileMenuButton"
+                            type="button"
+                            aria-label="Open navigation"
+                            aria-controls="sidebar"
+                            aria-expanded="false">☰</button>
 
-                    <p>
-                        Manage and analyze your data
-                    </p>
+                    <div class="breadcrumb">
+                        <span>Workspace</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <strong id="breadcrumbCurrent">Overview</strong>
+                    </div>
                 </div>
 
-                <div
-                    id="userName"
-                    class="user-name"
-                >
-                </div>
+                <div class="topbar-right">
+                    <span class="system-status">
+                        <span class="status-dot"></span>
+                        Workspace ready
+                    </span>
 
+                    <button class="topbar-avatar"
+                            id="topbarAvatar"
+                            type="button"
+                            aria-label="User profile">U</button>
+                </div>
             </header>
 
+            <div class="page-content">
 
-            <!-- Welcome -->
-            <section class="welcome-card">
+                <!-- Overview -->
+                <section class="page-section" id="overview">
+                    <div class="page-heading">
+                        <div>
+                            <div class="eyebrow">
+                                <span class="status-dot"></span>
+                                YOUR DATA WORKSPACE
+                            </div>
 
-                <h2>
-                    Welcome to Data Link AI 👋
-                </h2>
+                            <h1>Good to see you, <span id="welcomeName">there</span>.</h1>
 
-                <p>
-                    Upload your data and let Data Link AI
-                    transform it into meaningful insights.
-                </p>
+                            <p>Bring your data together and turn it into meaningful insights.</p>
+                        </div>
 
-            </section>
+                        <a class="primary-button" href="#upload" data-section="upload">
+                            <span aria-hidden="true">＋</span>
+                            Upload dataset
+                        </a>
+                    </div>
 
+                    <!-- Summary cards -->
+                    <div class="metrics-grid">
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-label">Total datasets</span>
+                                <span class="metric-icon cyan-icon" aria-hidden="true">▤</span>
+                            </div>
+                            <div class="metric-value" id="totalFiles">0</div>
+                            <p class="metric-description">Datasets in your workspace</p>
+                        </article>
 
-            <!-- Statistics -->
-            <section class="stats-grid">
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-label">Total analyses</span>
+                                <span class="metric-icon purple-icon" aria-hidden="true">⌁</span>
+                            </div>
+                            <div class="metric-value" id="totalAnalyses">0</div>
+                            <p class="metric-description">Analysis runs recorded</p>
+                        </article>
 
-                <div class="stat-card">
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-label">Data processed</span>
+                                <span class="metric-icon green-icon" aria-hidden="true">↗</span>
+                            </div>
+                            <div class="metric-value" id="dataProcessed">0</div>
+                            <p class="metric-description">Files processed in your workspace</p>
+                        </article>
+                    </div>
 
-                    <span>
-                        Total Files
-                    </span>
+                    <!-- Main dashboard grid -->
+                    <div class="dashboard-grid">
 
-                    <strong id="totalFiles">
-                        0
-                    </strong>
+                        <!-- Upload panel -->
+                        <section class="panel upload-panel" id="upload">
+                            <div class="panel-header">
+                                <div>
+                                    <span class="section-kicker">GET STARTED</span>
+                                    <h2>Upload your data</h2>
+                                    <p>Bring in a file to begin exploring your data.</p>
+                                </div>
+                                <span class="panel-header-icon" aria-hidden="true">↑</span>
+                            </div>
 
-                </div>
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <label class="dropzone" id="dropzone" for="fileInput">
+                                    <span class="upload-icon" aria-hidden="true">↑</span>
+                                    <strong>Drop your file here</strong>
+                                    <span>or <span class="text-link">browse files</span></span>
+                                    <small>CSV or Excel files supported</small>
+                                    <input
+                                        type="file"
+                                        id="fileInput"
+                                        name="file"
+                                        accept=".csv,.xlsx,.xls"
+                                        required
+                                    >
+                                </label>
 
+                                <div class="selected-file" id="selectedFile" hidden>
+                                    <span class="selected-file-icon" aria-hidden="true">▤</span>
+                                    <span class="selected-file-details">
+                                        <strong id="fileName">No file selected</strong>
+                                        <small>Ready to upload</small>
+                                    </span>
+                                    <button class="icon-button"
+                                            type="button"
+                                            id="clearFileButton"
+                                            aria-label="Remove selected file">×</button>
+                                </div>
 
-                <div class="stat-card">
+                                <div class="upload-actions">
+                                    <span class="upload-note">Maximum size depends on server configuration.</span>
+                                    <button class="primary-button" type="submit" id="uploadButton">
+                                        Upload file <span aria-hidden="true">→</span>
+                                    </button>
+                                </div>
 
-                    <span>
-                        Analyses
-                    </span>
+                                <p id="uploadMessage" class="form-message" role="status" aria-live="polite"></p>
+                                <div id="uploadStatus" class="upload-status" aria-live="polite"></div>
+                            </form>
+                        </section>
 
-                    <strong id="totalAnalyses">
-                        0
-                    </strong>
+                        <!-- Quick actions -->
+                        <section class="panel quick-actions-panel">
+                            <div class="panel-header">
+                                <div>
+                                    <span class="section-kicker">QUICK ACCESS</span>
+                                    <h2>Explore your data</h2>
+                                    <p>Jump straight into your next task.</p>
+                                </div>
+                            </div>
 
-                </div>
+                            <div class="quick-actions">
+                                <a class="quick-action" href="#datasets" data-section="datasets">
+                                    <span class="quick-action-icon cyan-icon" aria-hidden="true">▤</span>
+                                    <span class="quick-action-copy">
+                                        <strong>Browse datasets</strong>
+                                        <small>Find your uploaded files</small>
+                                    </span>
+                                    <span class="quick-arrow" aria-hidden="true">↗</span>
+                                </a>
 
+                                <a class="quick-action" href="#analysis" data-section="analysis">
+                                    <span class="quick-action-icon purple-icon" aria-hidden="true">⌁</span>
+                                    <span class="quick-action-copy">
+                                        <strong>Analyze data</strong>
+                                        <small>Explore structure and quality</small>
+                                    </span>
+                                    <span class="quick-arrow" aria-hidden="true">↗</span>
+                                </a>
 
-                <div class="stat-card">
+                                <a class="quick-action" href="#ai-insights" data-section="ai-insights">
+                                    <span class="quick-action-icon green-icon" aria-hidden="true">✳</span>
+                                    <span class="quick-action-copy">
+                                        <strong>Discover AI insights</strong>
+                                        <small>Explore intelligent assistance</small>
+                                    </span>
+                                    <span class="quick-arrow" aria-hidden="true">↗</span>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
 
-                    <span>
-                        Data Processed
-                    </span>
+                    <!-- Dataset overview -->
+                    <section class="panel datasets-panel" id="datasets">
+                        <div class="panel-header datasets-header">
+                            <div>
+                                <span class="section-kicker">YOUR FILES</span>
+                                <h2>My datasets</h2>
+                                <p>Manage and explore your uploaded datasets.</p>
+                            </div>
 
-                    <strong id="dataProcessed">
-                        0 MB
-                    </strong>
+                            <div class="dataset-tools">
+                                <label class="search-box" for="datasetSearch">
+                                    <span aria-hidden="true">⌕</span>
+                                    <input
+                                        type="search"
+                                        id="datasetSearch"
+                                        placeholder="Search datasets..."
+                                        autocomplete="off"
+                                    >
+                                </label>
 
-                </div>
+                                <span class="dataset-count" id="datasetCount">0 datasets</span>
+                            </div>
+                        </div>
 
-            </section>
+                        <div class="dataset-table-wrap">
+                            <table class="dataset-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dataset</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="filesList">
+                                    <tr class="empty-row">
+                                        <td colspan="4">
+                                            <div class="empty-state">
+                                                <span class="empty-state-icon" aria-hidden="true">▤</span>
+                                                <strong>No datasets yet</strong>
+                                                <p>Upload a CSV or Excel file to get started.</p>
+                                                <a href="#upload" data-section="upload">Upload your first dataset →</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
 
+                    <!-- Recent activity -->
+                    <section class="panel activity-panel" id="activity">
+                        <div class="panel-header">
+                            <div>
+                                <span class="section-kicker">WORKSPACE LOG</span>
+                                <h2>Recent activity</h2>
+                                <p>Keep track of activity in your workspace.</p>
+                            </div>
 
-            <!-- Upload Section -->
-            <section class="upload-card">
+                            <span class="activity-indicator">
+                                <span class="status-dot"></span>
+                                Live workspace
+                            </span>
+                        </div>
 
-                <div>
+                        <div id="recentActivity" class="activity-list">
+                            <div class="activity-empty">
+                                <span aria-hidden="true">◷</span>
+                                <p>Your recent activity will appear here.</p>
+                            </div>
+                        </div>
+                    </section>
 
-                    <h2>
-                        Analyze your data
-                    </h2>
+                    <!-- Data analysis -->
+                    <section class="panel placeholder-panel" id="analysis">
+                        <div class="placeholder-icon purple-icon" aria-hidden="true">⌁</div>
+                        <div>
+                            <span class="section-kicker">DATA INTELLIGENCE</span>
+                            <h2>Data analysis</h2>
+                            <p>Choose a dataset from My datasets to begin analysis using the features available in your application.</p>
+                        </div>
+                    </section>
 
-                    <p>
-                        Upload CSV or Excel files to get
-                        started.
-                    </p>
+                    <!-- AI Insights -->
+                    <section class="panel ai-analysis-panel" id="ai-insights">
+                        <div class="panel-header">
+                            <div>
+                                <span class="section-kicker">AI ASSISTANCE</span>
+                                <h2>AI-Powered Dataset Analysis</h2>
+                                <p>Generate insights, identify data-quality issues, and get recommended next steps.</p>
+                            </div>
+                            <span class="panel-header-icon" aria-hidden="true">✳</span>
+                        </div>
 
-                </div>
+                        <div class="ai-analysis-controls">
+                            <label for="ai-file-id">Dataset ID</label>
+                            <input
+                                id="ai-file-id"
+                                type="number"
+                                min="1"
+                                step="1"
+                                placeholder="Enter uploaded dataset ID"
+                            >
+                            <button
+                                class="primary-button"
+                                type="button"
+                                id="ai-analyze-button"
+                                onclick="generateAIAnalysis()"
+                            >
+                                Generate AI Analysis
+                            </button>
+                        </div>
 
+                        <p id="ai-analysis-status" role="status" aria-live="polite"></p>
+                        <div id="ai-analysis-result" class="ai-analysis-result"></div>
+                    </section>
 
-                <label
-                    for="fileInput"
-                    class="upload-button"
-                >
-                    Choose File
-                </label>
+                    <!-- Footer -->
+                    <footer class="page-footer">
+                        <span>© 2026 Data Link AI</span>
+                        <span><span class="footer-star">✳</span> Transform data into intelligence</span>
+                    </footer>
 
-                <input
-                    type="file"
-                    id="fileInput"
-                    accept=".csv,.xlsx,.xls"
-                    hidden
-                >
-
-                <p id="fileName"></p>
-                <p id="uploadStatus"></p>
-
-            </section>
-            
-            <section class="recent-card">
-
-                <h2>
-                    Recent Activity
-                </h2>
-
-                <div id="recentActivity">
-
-                    <p class="empty-state">
-                        No activity yet.
-                    </p>
-
-                </div>
-
-            </section>
-
+                </section>
+            </div>
         </main>
-
     </div>
 
-
     <script src="/js/dashboard.js"></script>
-
+    <script src="/js/dashboard-ui.js"></script>
 </body>
-
 </html>

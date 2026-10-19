@@ -1,54 +1,240 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080d18">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Sign In | Data Link AI</title>
+    <meta name="description" content="Sign in to Data Link AI to organize, analyze, and understand your datasets.">
 
-    <title>Data Link AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/auth.css">
 </head>
 
 <body>
+    <main class="auth-layout">
 
-    <div class="home-container">
+        <!-- Left branding panel -->
+        <section class="auth-showcase">
+            <a class="brand" href="/index.html">
+                <span class="brand-mark">
+                    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                        <path d="M10 13H18L24 20L30 13M10 27H18L24 20L30 27"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                        <circle cx="10" cy="13" r="2.5" fill="currentColor"/>
+                        <circle cx="30" cy="13" r="2.5" fill="currentColor"/>
+                        <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+                        <circle cx="10" cy="27" r="2.5" fill="currentColor"/>
+                        <circle cx="30" cy="27" r="2.5" fill="currentColor"/>
+                    </svg>
+                </span>
 
-        <h1>Data Link AI</h1>
-
-        <p>
-            Intelligent data processing and analysis platform.
-        </p>
-
-        <p id="status">
-            Checking backend...
-        </p>
-
-        <div class="home-buttons">
-
-            <a href="/login.html">
-                Login
+                <span class="brand-copy">
+                    <strong>Data Link<span> AI</span></strong>
+                    <small>INTELLIGENCE WORKSPACE</small>
+                </span>
             </a>
 
-            <a href="/register.html">
-                Create Account
-            </a>
+            <div class="showcase-content">
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    YOUR DATA. MORE CLARITY.
+                </div>
 
-        </div>
+                <h1>Make your data<br>work <span>smarter.</span></h1>
 
-    </div>
+                <p class="showcase-description">
+                    One workspace to upload datasets, improve data quality,
+                    explore patterns, and turn raw information into insights.
+                </p>
 
-    <script src="/js/app.js"></script>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">▤</span>
+                        <div>
+                            <strong>One organized workspace</strong>
+                            <span>Keep your uploaded datasets accessible.</span>
+                        </div>
+                    </div>
 
+                    <div class="feature-item">
+                        <span class="feature-icon">⌁</span>
+                        <div>
+                            <strong>Data quality tools</strong>
+                            <span>Inspect missing values and duplicates.</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span class="feature-icon">✳</span>
+                        <div>
+                            <strong>AI-assisted workflows</strong>
+                            <span>Structure and understand your data.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="showcase-bottom">
+                <span class="status-dot"></span>
+                Built for better data decisions
+                <span class="showcase-version">DATA LINK AI · 2026</span>
+            </div>
+
+            <!-- Decorative data visualization -->
+            <div class="auth-visual" aria-hidden="true">
+                <div class="visual-ring ring-1"></div>
+                <div class="visual-ring ring-2"></div>
+                <div class="visual-ring ring-3"></div>
+                <div class="visual-center">✳</div>
+                <span class="visual-point point-1"></span>
+                <span class="visual-point point-2"></span>
+                <span class="visual-point point-3"></span>
+            </div>
+        </section>
+
+        <!-- Right login panel -->
+        <section class="auth-form-panel">
+            <div class="auth-form-container">
+
+                <div class="mobile-brand">
+                    <span class="brand-mark">
+                        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                            <path d="M10 13H18L24 20L30 13M10 27H18L24 20L30 27"
+                                  stroke="currentColor"
+                                  stroke-width="2.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            <circle cx="10" cy="13" r="2.5" fill="currentColor"/>
+                            <circle cx="30" cy="13" r="2.5" fill="currentColor"/>
+                            <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+                            <circle cx="10" cy="27" r="2.5" fill="currentColor"/>
+                            <circle cx="30" cy="27" r="2.5" fill="currentColor"/>
+                        </svg>
+                    </span>
+                    <strong>Data Link<span> AI</span></strong>
+                </div>
+
+                <div class="form-heading">
+                    <div class="form-eyebrow">WELCOME BACK</div>
+                    <h2>Sign in to your<br><span>workspace.</span></h2>
+                    <p>Enter your credentials to continue.</p>
+                </div>
+
+                <form id="loginForm" class="auth-form" novalidate>
+                    <div class="form-field">
+                        <label for="email">Email address</label>
+
+                        <div class="input-wrap">
+                            <span class="input-icon" aria-hidden="true">✉</span>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                        </div>
+
+                        <div class="input-wrap">
+                            <span class="input-icon" aria-hidden="true">⌑</span>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                            >Show</button>
+                        </div>
+                    </div>
+
+                    <p
+                        id="loginMessage"
+                        class="form-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                    <button type="submit" id="loginButton" class="submit-button">
+                        <span>Sign in</span>
+                        <span class="submit-arrow">→</span>
+                    </button>
+                </form>
+
+                <div class="auth-divider">
+                    <span></span>
+                    <small>YOUR WORKSPACE AWAITS</small>
+                    <span></span>
+                </div>
+
+                <p class="signup-prompt">
+                    New to Data Link AI?
+                    <a href="/register.html">Create an account <span>→</span></a>
+                </p>
+
+                <div class="security-note">
+                    <span class="security-icon">◇</span>
+                    <span>Your account is managed through your Data Link AI authentication service.</span>
+                </div>
+
+            </div>
+
+            <footer class="auth-footer">
+                <span>© 2026 Data Link AI</span>
+                <span>Designed for data clarity <span class="footer-star">✦</span></span>
+            </footer>
+        </section>
+
+    </main>
+
+    <script src="/js/auth.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const password = document.getElementById("password");
+            const toggle = document.getElementById("togglePassword");
+
+            if (password && toggle) {
+                toggle.addEventListener("click", () => {
+                    const showPassword = password.type === "password";
+
+                    password.type = showPassword ? "text" : "password";
+                    toggle.textContent = showPassword ? "Hide" : "Show";
+                    toggle.setAttribute(
+                        "aria-label",
+                        showPassword ? "Hide password" : "Show password"
+                    );
+                    toggle.setAttribute(
+                        "aria-pressed",
+                        String(showPassword)
+                    );
+                });
+            }
+        });
+    </script>
 </body>
-
 </html>

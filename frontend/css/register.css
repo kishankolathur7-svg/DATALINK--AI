@@ -1,0 +1,139 @@
+
+/* Data Link AI — Registration page */
+
+.register-layout .auth-form-container {
+    max-width: 430px;
+}
+
+.register-layout .form-heading {
+    margin-bottom: 25px;
+}
+
+.register-layout .form-heading h2 {
+    font-size: clamp(32px, 3vw, 39px);
+}
+
+.register-layout .auth-form {
+    gap: 17px;
+}
+
+.register-layout .form-field {
+    gap: 8px;
+}
+
+.register-layout .input-wrap {
+    min-height: 49px;
+}
+
+.register-layout .input-wrap input {
+    height: 47px;
+}
+
+.register-layout .field-hint {
+    color: #71849e;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.register-layout .submit-button {
+    margin-top: 3px;
+}
+
+.register-layout .auth-divider {
+    margin-top: 24px;
+    margin-bottom: 19px;
+}
+
+.register-layout .security-note {
+    margin-top: 25px;
+}
+
+.register-layout .auth-footer {
+    margin-top: 28px;
+}
+
+.register-layout .form-message {
+    overflow-wrap: anywhere;
+}
+
+@media (max-height: 850px) and (min-width: 761px) {
+    .register-layout .auth-form-panel {
+        padding-top: 25px;
+        padding-bottom: 20px;
+    }
+
+    .register-layout .form-heading {
+        margin-bottom: 18px;
+    }
+
+    .register-layout .form-heading h2 {
+        font-size: 33px;
+    }
+
+    .register-layout .auth-form {
+        gap: 12px;
+    }
+
+    .register-layout .security-note {
+        margin-top: 18px;
+        padding: 11px;
+    }
+
+    .register-layout .auth-divider {
+        margin-top: 18px;
+        margin-bottom: 14px;
+    }
+
+    .register-layout .auth-footer {
+        margin-top: 18px;
+    }
+}
+
+@media (max-width: 760px) {
+    .register-layout .auth-form-panel {
+        padding-top: 27px;
+    }
+
+    .register-layout .mobile-brand {
+        margin-bottom: 32px;
+    }
+
+    .register-layout .form-heading {
+        margin-bottom: 25px;
+    }
+
+    .register-layout .form-heading h2 {
+        font-size: 35px;
+    }
+
+    .register-layout .auth-form {
+        gap: 17px;
+    }
+
+    .register-layout .security-note {
+        margin-top: 25px;
+    }
+
+    .register-layout .auth-footer {
+        margin-top: 32px;
+    }
+}
+
+@media (max-width: 400px) {
+    .register-layout .form-heading h2 {
+        font-size: 32px;
+    }
+
+    .register-layout .auth-form {
+        gap: 15px;
+    }
+
+    .register-layout .input-wrap {
+        padding-right: 11px;
+        padding-left: 11px;
+    }
+
+    .register-layout .input-icon {
+        flex-basis: 24px;
+    }
+}
