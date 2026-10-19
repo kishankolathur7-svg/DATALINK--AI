@@ -8,7 +8,7 @@
 // ============================================================
 
 const storedUser =
-    localStorage.getItem("productmind_user");
+    localStorage.getItem("user");
 
 let user = null;
 
@@ -24,7 +24,7 @@ try {
 }
 
 if (!user) {
-    window.location.href = "login.html";
+    window.location.href = "/index.html";
 }
 
 
@@ -103,12 +103,13 @@ function setupLogout() {
 
             }
 
-            localStorage.removeItem(
-                "productmind_user"
-            );
+            localStorage.removeItem("user");
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("user_name");
+            localStorage.removeItem("user_email");
+            localStorage.removeItem("productmind_user");
 
-            window.location.href =
-                "login.html";
+            window.location.href = "/index.html";
         }
     );
 }
