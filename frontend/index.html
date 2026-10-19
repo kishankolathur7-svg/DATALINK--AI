@@ -1,539 +1,240 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080d18">
 
-    <title>Data Link AI — Turn Data Into Intelligence</title>
-
-    <meta
-        name="description"
-        content="Data Link AI transforms unstructured information into structured, actionable intelligence."
-    >
+    <title>Sign In | Data Link AI</title>
+    <meta name="description" content="Sign in to Data Link AI to organize, analyze, and understand your datasets.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/auth.css">
 </head>
 
 <body>
+    <main class="auth-layout">
 
-    <!-- =========================
-         NAVBAR
-    ========================== -->
+        <!-- Left branding panel -->
+        <section class="auth-showcase">
+            <a class="brand" href="/index.html">
+                <span class="brand-mark">
+                    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                        <path d="M10 13H18L24 20L30 13M10 27H18L24 20L30 27"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                        <circle cx="10" cy="13" r="2.5" fill="currentColor"/>
+                        <circle cx="30" cy="13" r="2.5" fill="currentColor"/>
+                        <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+                        <circle cx="10" cy="27" r="2.5" fill="currentColor"/>
+                        <circle cx="30" cy="27" r="2.5" fill="currentColor"/>
+                    </svg>
+                </span>
 
-    <nav class="navbar">
-
-        <a href="/" class="brand">
-
-            <div class="brand-icon">
-                <span>DL</span>
-            </div>
-
-            <span>Data Link AI</span>
-
-        </a>
-
-        <div class="nav-links">
-
-            <a href="#how-it-works">How it works</a>
-            <a href="#features">Features</a>
-            <a href="#technology">Technology</a>
-
-        </div>
-
-        <div class="nav-actions">
-
-            <a href="/login.html" class="btn-login">
-                Login
+                <span class="brand-copy">
+                    <strong>Data Link<span> AI</span></strong>
+                    <small>INTELLIGENCE WORKSPACE</small>
+                </span>
             </a>
 
-            <a href="/register.html" class="btn-primary">
-                Get Started
-            </a>
-
-        </div>
-
-    </nav>
-
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main>
-
-        <!-- HERO -->
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    AI-powered data intelligence
+            <div class="showcase-content">
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    YOUR DATA. MORE CLARITY.
                 </div>
 
-                <h1>
-                    Turn messy data into
-                    <span class="gradient-text">
-                        structured intelligence.
-                    </span>
-                </h1>
+                <h1>Make your data<br>work <span>smarter.</span></h1>
 
-                <p class="hero-description">
-                    Data Link AI transforms unstructured information into
-                    clean, structured and actionable data using artificial
-                    intelligence — so you can analyze, clean and understand
-                    your data faster.
+                <p class="showcase-description">
+                    One workspace to upload datasets, improve data quality,
+                    explore patterns, and turn raw information into insights.
                 </p>
 
-                <div class="hero-buttons">
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">▤</span>
+                        <div>
+                            <strong>One organized workspace</strong>
+                            <span>Keep your uploaded datasets accessible.</span>
+                        </div>
+                    </div>
 
-                    <a
-                        href="/register.html"
-                        class="hero-main-button"
-                    >
-                        Start Structuring
-                        <span>→</span>
-                    </a>
+                    <div class="feature-item">
+                        <span class="feature-icon">⌁</span>
+                        <div>
+                            <strong>Data quality tools</strong>
+                            <span>Inspect missing values and duplicates.</span>
+                        </div>
+                    </div>
 
-                    <a
-                        href="#how-it-works"
-                        class="hero-secondary-button"
-                    >
-                        Explore Platform
-                        <span>↓</span>
-                    </a>
-
+                    <div class="feature-item">
+                        <span class="feature-icon">✳</span>
+                        <div>
+                            <strong>AI-assisted workflows</strong>
+                            <span>Structure and understand your data.</span>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
+            <div class="showcase-bottom">
+                <span class="status-dot"></span>
+                Built for better data decisions
+                <span class="showcase-version">DATA LINK AI · 2026</span>
+            </div>
 
-            <!-- AI VISUAL -->
+            <!-- Decorative data visualization -->
+            <div class="auth-visual" aria-hidden="true">
+                <div class="visual-ring ring-1"></div>
+                <div class="visual-ring ring-2"></div>
+                <div class="visual-ring ring-3"></div>
+                <div class="visual-center">✳</div>
+                <span class="visual-point point-1"></span>
+                <span class="visual-point point-2"></span>
+                <span class="visual-point point-3"></span>
+            </div>
+        </section>
 
-            <div class="hero-visual">
+        <!-- Right login panel -->
+        <section class="auth-form-panel">
+            <div class="auth-form-container">
 
-                <div class="visual-glow"></div>
+                <div class="mobile-brand">
+                    <span class="brand-mark">
+                        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                            <path d="M10 13H18L24 20L30 13M10 27H18L24 20L30 27"
+                                  stroke="currentColor"
+                                  stroke-width="2.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            <circle cx="10" cy="13" r="2.5" fill="currentColor"/>
+                            <circle cx="30" cy="13" r="2.5" fill="currentColor"/>
+                            <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+                            <circle cx="10" cy="27" r="2.5" fill="currentColor"/>
+                            <circle cx="30" cy="27" r="2.5" fill="currentColor"/>
+                        </svg>
+                    </span>
+                    <strong>Data Link<span> AI</span></strong>
+                </div>
 
-                <div class="data-orbit">
+                <div class="form-heading">
+                    <div class="form-eyebrow">WELCOME BACK</div>
+                    <h2>Sign in to your<br><span>workspace.</span></h2>
+                    <p>Enter your credentials to continue.</p>
+                </div>
 
-                    <div class="ai-core">
+                <form id="loginForm" class="auth-form" novalidate>
+                    <div class="form-field">
+                        <label for="email">Email address</label>
 
-                        <div class="ai-core-icon">
-                            ✦
+                        <div class="input-wrap">
+                            <span class="input-icon" aria-hidden="true">✉</span>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <div class="label-row">
+                            <label for="password">Password</label>
                         </div>
 
-                        <strong>
-                            Data Link AI
-                        </strong>
+                        <div class="input-wrap">
+                            <span class="input-icon" aria-hidden="true">⌑</span>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
 
-                        <span>
-                            STRUCTURING ENGINE
-                        </span>
-
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                            >Show</button>
+                        </div>
                     </div>
 
+                    <p
+                        id="loginMessage"
+                        class="form-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
 
-                    <div class="floating-card card-one">
+                    <button type="submit" id="loginButton" class="submit-button">
+                        <span>Sign in</span>
+                        <span class="submit-arrow">→</span>
+                    </button>
+                </form>
 
-                        <small>
-                            INPUT
-                        </small>
-
-                        <strong>
-                            Raw Text
-                        </strong>
-
-                    </div>
-
-
-                    <div class="floating-card card-two">
-
-                        <small>
-                            AI EXTRACTION
-                        </small>
-
-                        <strong>
-                            Entities + Fields
-                        </strong>
-
-                    </div>
-
-
-                    <div class="floating-card card-three">
-
-                        <small>
-                            PROCESSING
-                        </small>
-
-                        <strong>
-                            Data Cleaning
-                        </strong>
-
-                    </div>
-
-
-                    <div class="floating-card card-four">
-
-                        <small>
-                            OUTPUT
-                        </small>
-
-                        <strong>
-                            Structured Data
-                        </strong>
-
-                    </div>
-
+                <div class="auth-divider">
+                    <span></span>
+                    <small>YOUR WORKSPACE AWAITS</small>
+                    <span></span>
                 </div>
 
-            </div>
-
-        </section>
-
-
-        <!-- HOW IT WORKS -->
-
-        <section
-            class="section"
-            id="how-it-works"
-        >
-
-            <div class="section-header">
-
-                <div class="section-label">
-                    Simple workflow
-                </div>
-
-                <h2>
-                    From raw information
-                    to usable data.
-                </h2>
-
-                <p>
-                    Data Link AI connects the entire data transformation
-                    workflow in one intelligent platform.
+                <p class="signup-prompt">
+                    New to Data Link AI?
+                    <a href="/register.html">Create an account <span>→</span></a>
                 </p>
 
-            </div>
-
-
-            <div class="flow-container">
-
-                <div class="flow-card">
-
-                    <div class="flow-icon">
-                        ◈
-                    </div>
-
-                    <h3>
-                        Unstructured Input
-                    </h3>
-
-                    <p>
-                        Start with messy text, inconsistent information,
-                        uploaded datasets or other raw data sources.
-                    </p>
-
-                </div>
-
-
-                <div class="flow-arrow">
-                    →
-                </div>
-
-
-                <div class="flow-card">
-
-                    <div class="flow-icon">
-                        ✦
-                    </div>
-
-                    <h3>
-                        AI Structuring
-                    </h3>
-
-                    <p>
-                        Artificial intelligence identifies relevant entities,
-                        attributes and relationships and organizes them into
-                        structured information.
-                    </p>
-
-                </div>
-
-
-                <div class="flow-arrow">
-                    →
-                </div>
-
-
-                <div class="flow-card">
-
-                    <div class="flow-icon">
-                        ▦
-                    </div>
-
-                    <h3>
-                        Structured Output
-                    </h3>
-
-                    <p>
-                        Get clean, readable and analysis-ready data that can
-                        be reviewed, cleaned and exported.
-                    </p>
-
+                <div class="security-note">
+                    <span class="security-icon">◇</span>
+                    <span>Your account is managed through your Data Link AI authentication service.</span>
                 </div>
 
             </div>
 
-        </section>
-
-
-        <!-- FEATURES -->
-
-        <section
-            class="section"
-            id="features"
-        >
-
-            <div class="section-header">
-
-                <div class="section-label">
-                    Platform capabilities
-                </div>
-
-                <h2>
-                    Everything you need
-                    for better data.
-                </h2>
-
-                <p>
-                    A single workspace for structuring, analyzing and
-                    improving your data.
-                </p>
-
-            </div>
-
-
-            <div class="features-grid">
-
-                <div class="feature-card">
-
-                    <span>✦</span>
-
-                    <h3>
-                        AI Structuring
-                    </h3>
-
-                    <p>
-                        Convert unstructured information into meaningful
-                        structured fields automatically.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <span>◫</span>
-
-                    <h3>
-                        Dataset Analysis
-                    </h3>
-
-                    <p>
-                        Understand rows, columns, data types and dataset
-                        quality at a glance.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <span>⌘</span>
-
-                    <h3>
-                        Data Cleaning
-                    </h3>
-
-                    <p>
-                        Detect and clean missing values, duplicates and
-                        empty columns.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <span>⇩</span>
-
-                    <h3>
-                        Export Ready
-                    </h3>
-
-                    <p>
-                        Transform processed information into data that can
-                        be used for further analysis.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- TECHNOLOGY -->
-
-        <section
-            class="section"
-            id="technology"
-        >
-
-            <div class="section-header">
-
-                <div class="section-label">
-                    Built for data workflows
-                </div>
-
-                <h2>
-                    AI meets practical
-                    data engineering.
-                </h2>
-
-                <p>
-                    Data Link AI combines an interactive web interface,
-                    Python-based processing, structured storage and AI
-                    capabilities into one workflow.
-                </p>
-
-            </div>
-
-
-            <div class="features-grid">
-
-                <div class="feature-card">
-
-                    <span>⚡</span>
-
-                    <h3>
-                        Fast Processing
-                    </h3>
-
-                    <p>
-                        Move from raw information to useful structured
-                        results without manual formatting.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <span>◉</span>
-
-                    <h3>
-                        Intelligent Extraction
-                    </h3>
-
-                    <p>
-                        Identify useful information dynamically rather than
-                        relying only on fixed fields.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <span>▣</span>
-
-                    <h3>
-                        SQLite Storage
-                    </h3>
-
-                    <p>
-                        Keep application and processing information organized
-                        through the platform's database layer.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <span>⌁</span>
-
-                    <h3>
-                        Interactive Workspace
-                    </h3>
-
-                    <p>
-                        Review your datasets and processing results through a
-                        modern web-based dashboard.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CTA -->
-
-        <section class="cta">
-
-            <div class="cta-box">
-
-                <h2>
-                    Ready to connect your data?
-                </h2>
-
-                <p>
-                    Start with unstructured information and transform it into
-                    structured intelligence with Data Link AI.
-                </p>
-
-                <a
-                    href="/register.html"
-                    class="hero-main-button"
-                >
-                    Create Your Workspace
-                    <span>→</span>
-                </a>
-
-            </div>
-
+            <footer class="auth-footer">
+                <span>© 2026 Data Link AI</span>
+                <span>Designed for data clarity <span class="footer-star">✦</span></span>
+            </footer>
         </section>
 
     </main>
 
+    <script src="/js/auth.js"></script>
 
-    <!-- FOOTER -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const password = document.getElementById("password");
+            const toggle = document.getElementById("togglePassword");
 
-    <footer>
+            if (password && toggle) {
+                toggle.addEventListener("click", () => {
+                    const showPassword = password.type === "password";
 
-        <div>
-            © 2026 Data Link AI
-        </div>
-
-        <div>
-            AI-powered data structuring & analysis
-        </div>
-
-    </footer>
-
+                    password.type = showPassword ? "text" : "password";
+                    toggle.textContent = showPassword ? "Hide" : "Show";
+                    toggle.setAttribute(
+                        "aria-label",
+                        showPassword ? "Hide password" : "Show password"
+                    );
+                    toggle.setAttribute(
+                        "aria-pressed",
+                        String(showPassword)
+                    );
+                });
+            }
+        });
+    </script>
 </body>
 </html>

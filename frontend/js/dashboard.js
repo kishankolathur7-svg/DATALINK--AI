@@ -849,7 +849,7 @@ async function loadQualityReport(
 
 
 // ============================================================
-// DISPLAY QUALITY REPORT
+// DISPLAY QUALITY REPORT — FIXED
 // ============================================================
 
 function displayQualityReport(
@@ -865,7 +865,7 @@ function displayQualityReport(
         return;
     }
 
-    if (!quality) {
+    if (!quality || typeof quality !== "object") {
 
         container.innerHTML =
             "<p>No quality report available.</p>";
@@ -873,36 +873,58 @@ function displayQualityReport(
         return;
     }
 
+    // Aggregate statistics are stored in quality.summary.
+    const summary =
+        quality.summary &&
+        typeof quality.summary === "object"
+            ? quality.summary
+            : {};
+
     const score =
         quality.quality_score ??
         quality.score ??
         "N/A";
 
+    // quality.missing_values is a per-column object.
+    // The total missing count is stored in summary.missing_values.
     const totalMissing =
+        summary.missing_values ??
         quality.total_missing ??
-        quality.missing_values ??
-        0;
+        (
+            typeof quality.missing_values === "number"
+                ? quality.missing_values
+                : 0
+        );
 
     const duplicateRows =
+        summary.duplicate_rows ??
         quality.duplicate_rows ??
         0;
 
     const emptyColumns =
-        quality.empty_columns ??
-        0;
+        summary.empty_columns ??
+        (
+            Array.isArray(
+                quality.empty_column_names
+            )
+                ? quality.empty_column_names.length
+                : (
+                    typeof quality.empty_columns === "number"
+                        ? quality.empty_columns
+                        : 0
+                )
+        );
+
+    const recommendations =
+        Array.isArray(
+            quality.recommendations
+        )
+            ? quality.recommendations
+            : [];
 
     let recommendationsHtml = "";
 
-    const recommendations =
-        quality.recommendations ||
-        [];
-
-    if (
-        Array.isArray(
-            recommendations
-        ) &&
-        recommendations.length > 0
-    ) {
+    if (recommendations.length > 0) {
 
         recommendationsHtml = `
             <div class="quality-recommendations">
@@ -912,23 +934,72 @@ function displayQualityReport(
                 </h4>
 
                 <ul>
+                    ${recommendations.map(
+                        function (recommendation) {
+
+                            let message = "";
+
+                            if (
+                                typeof recommendation === "string"
+                            ) {
+
+                                message =
+                                    recommendation;
+
+                            } else if (
+                                recommendation &&
+                                typeof recommendation === "object"
+                            ) {
+
+                                message =
+                                    recommendation.message ||
+                                    recommendation.description ||
+                                    recommendation.type ||
+                                    "Review this data-quality issue.";
+
+                                if (
+                                    recommendation.count !== undefined &&
+                                    recommendation.count !== null
+                                ) {
+
+                                    message +=
+                                        " (Count: " +
+                                        recommendation.count +
+                                        ")";
+                                }
+
+                            } else {
+
+                                message =
+                                    String(
+                                        recommendation ?? ""
+                                    );
+                            }
+
+                            return `
+                                <li>
+                                    ${escapeHtml(message)}
+                                </li>
+                            `;
+                        }
+                    ).join("")}
+                </ul>
+
+            </div>
         `;
 
-        recommendations.forEach(
-            function (recommendation) {
+    } else {
 
-                recommendationsHtml += `
-                    <li>
-                        ${escapeHtml(
-                            recommendation
-                        )}
-                    </li>
-                `;
-            }
-        );
+        recommendationsHtml = `
+            <div class="quality-recommendations">
 
-        recommendationsHtml += `
-                </ul>
+                <h4>
+                    Recommendations
+                </h4>
+
+                <p>
+                    No recommendations available.
+                </p>
 
             </div>
         `;
@@ -949,9 +1020,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${escapeHtml(
-                            String(score)
-                        )}
+                        ${escapeHtml(String(score))}${score !== "N/A" ? "%" : ""}
                     </span>
                 </div>
 
@@ -961,7 +1030,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${totalMissing}
+                        ${Number(totalMissing).toLocaleString()}
                     </span>
                 </div>
 
@@ -971,7 +1040,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${duplicateRows}
+                        ${Number(duplicateRows).toLocaleString()}
                     </span>
                 </div>
 
@@ -981,7 +1050,7 @@ function displayQualityReport(
                     </strong>
 
                     <span>
-                        ${emptyColumns}
+                        ${Number(emptyColumns).toLocaleString()}
                     </span>
                 </div>
 
@@ -1051,10 +1120,6 @@ function createCleaningControls(
                 Data Cleaning
             </h3>
 
-            <!-- ========================================= -->
-            <!-- MISSING VALUES                            -->
-            <!-- ========================================= -->
-
             <div class="cleaning-tool">
 
                 <h4>
@@ -1119,11 +1184,6 @@ function createCleaningControls(
                 ></div>
 
             </div>
-
-
-            <!-- ========================================= -->
-            <!-- DUPLICATES                                -->
-            <!-- ========================================= -->
 
             <div class="cleaning-tool">
 
@@ -1516,8 +1576,6 @@ async function cleanDuplicateRows(
         }
     }
 }
-
-
 // ============================================================
 // EMPTY COLUMN DETECTION
 // ============================================================
