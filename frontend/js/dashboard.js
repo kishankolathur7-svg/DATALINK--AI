@@ -2123,3 +2123,119 @@ function escapeHtml(
             "&#039;"
         );
 }
+// ============================================================
+// AI-POWERED DATASET ANALYSIS
+// ============================================================
+
+async function generateAIAnalysis() {
+    const fileIdInput = document.getElementById("ai-file-id");
+    const status = document.getElementById("ai-analysis-status");
+    const result = document.getElementById("ai-analysis-result");
+    const button = document.getElementById("ai-analyze-button");
+
+    const fileId = Number(fileIdInput.value);
+
+    if (!Number.isInteger(fileId) || fileId <= 0) {
+        status.textContent = "Please enter a valid dataset ID.";
+        return;
+    }
+
+    if (typeof user === "undefined" || !user || !user.id) {
+        status.textContent = "Please log in before using AI analysis.";
+        return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Analyzing dataset with AI. Please wait...";
+    result.textContent = "";
+
+    try {
+        const url =
+            `/api/files/${fileId}/ai-analysis` +
+            `?user_id=${encodeURIComponent(user.id)}`;
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            },
+            credentials: "same-origin"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || `Request failed with status ${response.status}`
+            );
+        }
+
+        if (!data.ai_analysis) {
+            throw new Error("The AI response did not contain an analysis.");
+        }
+
+        result.textContent = data.ai_analysis;
+        status.textContent = "AI analysis completed successfully.";
+
+    } catch (error) {
+        console.error("AI analysis error:", error);
+
+        status.textContent =
+            error.message || "Unable to generate AI analysis.";
+
+    } finally {
+        button.disabled = false;
+    }
+}
+async function generateAIAnalysis() {
+    const fileInput = document.getElementById("ai-file-id");
+    const status = document.getElementById("ai-analysis-status");
+    const result = document.getElementById("ai-analysis-result");
+    const button = document.getElementById("ai-analyze-button");
+
+    const fileId = Number(fileInput.value);
+
+    if (!Number.isInteger(fileId) || fileId < 1) {
+        status.textContent = "Please enter a valid dataset ID.";
+        return;
+    }
+
+    if (!user || !user.id) {
+        status.textContent = "Please log in first.";
+        return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Generating AI insights...";
+    result.textContent = "";
+
+    try {
+        const response = await fetch(
+            `/api/files/${fileId}/ai-analysis?user_id=${encodeURIComponent(user.id)}`,
+            {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                credentials: "same-origin"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || `Request failed: ${response.status}`
+            );
+        }
+
+        result.textContent = data.ai_analysis || "No analysis was returned.";
+        status.textContent = "AI analysis completed successfully.";
+
+    } catch (error) {
+        console.error("AI analysis error:", error);
+        status.textContent = error.message || "AI analysis failed.";
+    } finally {
+        button.disabled = false;
+    }
+}

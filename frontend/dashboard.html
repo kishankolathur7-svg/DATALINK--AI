@@ -197,6 +197,7 @@
                     <!-- Main dashboard grid -->
                     <div class="dashboard-grid">
 
+                        <!-- Upload panel -->
                         <section class="panel upload-panel" id="upload">
                             <div class="panel-header">
                                 <div>
@@ -246,6 +247,7 @@
                             </form>
                         </section>
 
+                        <!-- Quick actions -->
                         <section class="panel quick-actions-panel">
                             <div class="panel-header">
                                 <div>
@@ -359,7 +361,7 @@
                         </div>
                     </section>
 
-                    <!-- Analysis section anchor -->
+                    <!-- Data analysis -->
                     <section class="panel placeholder-panel" id="analysis">
                         <div class="placeholder-icon purple-icon" aria-hidden="true">⌁</div>
                         <div>
@@ -369,20 +371,46 @@
                         </div>
                     </section>
 
-                    <!-- AI insights section anchor -->
-                    <section class="panel placeholder-panel" id="ai-insights">
-                        <div class="placeholder-icon green-icon" aria-hidden="true">✳</div>
-                        <div>
-                            <span class="section-kicker">AI ASSISTANCE</span>
-                            <h2>AI insights</h2>
-                            <p>Use your existing AI integration to generate insights from supported data. API availability depends on your backend configuration.</p>
+                    <!-- AI Insights -->
+                    <section class="panel ai-analysis-panel" id="ai-insights">
+                        <div class="panel-header">
+                            <div>
+                                <span class="section-kicker">AI ASSISTANCE</span>
+                                <h2>AI-Powered Dataset Analysis</h2>
+                                <p>Generate insights, identify data-quality issues, and get recommended next steps.</p>
+                            </div>
+                            <span class="panel-header-icon" aria-hidden="true">✳</span>
                         </div>
+
+                        <div class="ai-analysis-controls">
+                            <label for="ai-file-id">Dataset ID</label>
+                            <input
+                                id="ai-file-id"
+                                type="number"
+                                min="1"
+                                step="1"
+                                placeholder="Enter uploaded dataset ID"
+                            >
+                            <button
+                                class="primary-button"
+                                type="button"
+                                id="ai-analyze-button"
+                                onclick="generateAIAnalysis()"
+                            >
+                                Generate AI Analysis
+                            </button>
+                        </div>
+
+                        <p id="ai-analysis-status" role="status" aria-live="polite"></p>
+                        <div id="ai-analysis-result" class="ai-analysis-result"></div>
                     </section>
 
+                    <!-- Footer -->
                     <footer class="page-footer">
                         <span>© 2026 Data Link AI</span>
                         <span><span class="footer-star">✳</span> Transform data into intelligence</span>
                     </footer>
+
                 </section>
             </div>
         </main>
